@@ -44,6 +44,7 @@ import com.android.systemui.qs.tiles.DeviceControlsTile;
 import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
+import com.android.systemui.qs.tiles.FPSInfoTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.InternetTile;
 import com.android.systemui.qs.tiles.LiveDisplayTile;
@@ -115,6 +116,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<AntiFlickerTile> mAntiFlickerTileProvider;
     private final Provider<VpnTile> mVpnTileProvider;
     private final Provider<CPUInfoTile> mCPUInfoTileProvider;
+    private final Provider<FPSInfoTile> mFPSInfoTileProvider;
 
     private final Lazy<QSHost> mQsHostLazy;
     private final Provider<CustomTile.Builder> mCustomTileBuilderProvider;
@@ -161,7 +163,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<ReadingModeTile> readingModeTileProvider,
             Provider<AntiFlickerTile> antiFlickerTileProvider,
             Provider<VpnTile> vpnTileProvider,
-            Provider<CPUInfoTile> cpuInfoTileProvider) {
+            Provider<CPUInfoTile> cpuInfoTileProvider,
+            Provider<FPSInfoTile> fpsInfoTileProvider) {
         mQsHostLazy = qsHostLazy;
         mCustomTileBuilderProvider = customTileBuilderProvider;
 
@@ -204,6 +207,7 @@ public class QSFactoryImpl implements QSFactory {
         mAntiFlickerTileProvider = antiFlickerTileProvider;
         mVpnTileProvider = vpnTileProvider;
         mCPUInfoTileProvider = cpuInfoTileProvider;
+        mFPSInfoTileProvider = fpsInfoTileProvider;
     }
 
     public QSTile createTile(String tileSpec) {
@@ -295,6 +299,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mVpnTileProvider.get();
             case "cpuinfo":
                 return mCPUInfoTileProvider.get();
+            case "fpsinfo":
+                return mFPSInfoTileProvider.get();
         }
         // Custom tiles
         if (tileSpec.startsWith(CustomTile.PREFIX)) {
