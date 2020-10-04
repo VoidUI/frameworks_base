@@ -119,13 +119,17 @@ public class NavigationBarInflaterView extends FrameLayout
 
     private boolean mInverseLayout;
     private boolean mCompactLayout;
+
     private static AtomicReference<Boolean> mIsHintEnabledRef;
+    private int mHomeHandleWidthMode = 0;
 
     public NavigationBarInflaterView(Context context, AttributeSet attrs) {
         super(context, attrs);
         createInflaters();
         mOverviewProxyService = Dependency.get(OverviewProxyService.class);
-        mNavBarMode = Dependency.get(NavigationModeController.class).addListener(this);
+        final NavigationModeController controller = Dependency.get(NavigationModeController.class);
+        mNavBarMode = controller.addListener(this);
+        mHomeHandleWidthMode = controller.getNavigationHandleWidthMode();
         mCompactLayout = Settings.System.getInt(context.getContentResolver(),
                                 Settings.System.NAV_BAR_COMPACT_LAYOUT, 0) != 0;
         mIsHintEnabledRef = new AtomicReference<>(true);
@@ -188,6 +192,17 @@ public class NavigationBarInflaterView extends FrameLayout
         Dependency.get(TunerService.class).addTunable(this, NAV_BAR_INVERSE);
         Dependency.get(TunerService.class).addTunable(this, NAV_BAR_COMPACT);
         Dependency.get(TunerService.class).addTunable(this, KEY_NAVIGATION_HINT);
+    }
+
+    @Override
+    public void onNavigationHandleWidthModeChanged(int mode) {
+        if (mHomeHandleWidthMode != mode) {
+            mHomeHandleWidthMode = mode;
+            if (QuickStepContract.isGesturalMode(mNavBarMode)) {
+                clearViews();
+                inflateLayout(getDefaultLayout());
+            }
+        }
     }
 
     @Override
@@ -503,6 +518,16 @@ public class NavigationBarInflaterView extends FrameLayout
             v = inflater.inflate(R.layout.contextual, parent, false);
         } else if (HOME_HANDLE.equals(button)) {
             v = inflater.inflate(R.layout.home_handle, parent, false);
+            final ViewGroup.LayoutParams lp = v.getLayoutParams();
+            if (mHomeHandleWidthMode == 1) {
+                lp.width = getResources().getDimensionPixelSize(
+                    R.dimen.navigation_home_handle_width_medium);
+                v.setLayoutParams(lp);
+            } else if (mHomeHandleWidthMode == 2) {
+                lp.width = getResources().getDimensionPixelSize(
+                    R.dimen.navigation_home_handle_width_long);
+                v.setLayoutParams(lp);
+            }
         } else if (IME_SWITCHER.equals(button)) {
             v = inflater.inflate(R.layout.ime_switcher, parent, false);
         } else if (button.startsWith(KEY)) {
