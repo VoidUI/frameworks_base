@@ -11,4 +11,8 @@
 
     <!-- Floating rotation button margin when on 2-button navbar mode -->
     <dimen name="floating_rotation_button_min_margin_navbar">60dp</dimen>
+
+    <!-- Additional gesture navbar lengths -->
+    <dimen name="navigation_home_handle_width_medium">110dp</dimen>
+    <dimen name="navigation_home_handle_width_long">140dp</dimen>
 </resources>
