@@ -10961,6 +10961,14 @@ public final class Settings {
         public static final String POWER_MENU_ACTIONS = "power_menu_actions";
 
         /**
+         * Gesture navbar length mode.
+         * Supported modes: 0 for normal length, 1 for medium and 2 for long.
+         * Default 0.
+         * @hide
+         */
+        public static final String GESTURE_NAVBAR_LENGTH_MODE = "gesture_navbar_length_mode";
+
+        /**
          * Whether tethering is allowed to use VPN upstreams
          * 0 = false, 1 = true
          */
