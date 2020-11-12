@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright 2022 VoidUI project
+     Copyright (C) 2022 VoidUI Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Label for UI element which allows deleting the screenshot [CHAR LIMIT=30] -->
-    <string name="screenshot_delete_label">Delete</string>
-
-    <!-- Content description indicating that tapping the element will allow deleting the screenshot [CHAR LIMIT=NONE] -->
-    <string name="screenshot_delete_description">Delete screenshot</string>
-
+<resources>
+    <string-array name="app_exceptions" translatable="false">
+        <item>org.kde.kdeconnect_tp</item>
+        <item>#FF808080</item>
+        <item>com.instagram.android</item>
+        <item>#FF833AB4</item>
+        <item>com.google.android.dialer</item>
+        <item>#FF2162D7</item>
+        <item>com.google.android.youtube</item>
+        <item>#FFDE4B4B</item>
+    </string-array>
 </resources>
-
