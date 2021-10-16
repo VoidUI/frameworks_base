@@ -59,6 +59,7 @@ import com.android.systemui.qs.tiles.ReduceBrightColorsTile;
 import com.android.systemui.qs.tiles.ReadingModeTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.ScreenRecordTile;
+import com.android.systemui.qs.tiles.SoundTile;
 import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UiModeNightTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
@@ -119,6 +120,7 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<CPUInfoTile> mCPUInfoTileProvider;
     private final Provider<FPSInfoTile> mFPSInfoTileProvider;
     private final Provider<DataSwitchTile> mDataSwitchTileProvider;
+    private final Provider<SoundTile> mSoundTileProvider;
 
     private final Lazy<QSHost> mQsHostLazy;
     private final Provider<CustomTile.Builder> mCustomTileBuilderProvider;
@@ -167,7 +169,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<VpnTile> vpnTileProvider,
             Provider<CPUInfoTile> cpuInfoTileProvider,
             Provider<FPSInfoTile> fpsInfoTileProvider,
-            Provider<DataSwitchTile> dataSwitchTileProvider) {
+            Provider<DataSwitchTile> dataSwitchTileProvider,
+            Provider<SoundTile> soundTileProvider) {
         mQsHostLazy = qsHostLazy;
         mCustomTileBuilderProvider = customTileBuilderProvider;
 
@@ -212,6 +215,7 @@ public class QSFactoryImpl implements QSFactory {
         mCPUInfoTileProvider = cpuInfoTileProvider;
         mFPSInfoTileProvider = fpsInfoTileProvider;
         mDataSwitchTileProvider = dataSwitchTileProvider;
+        mSoundTileProvider = soundTileProvider;
     }
 
     public QSTile createTile(String tileSpec) {
@@ -307,6 +311,8 @@ public class QSFactoryImpl implements QSFactory {
                 return mFPSInfoTileProvider.get();
             case "dataswitch":
                 return mDataSwitchTileProvider.get();
+            case "sound":
+                return mSoundTileProvider.get();
         }
         // Custom tiles
         if (tileSpec.startsWith(CustomTile.PREFIX)) {
