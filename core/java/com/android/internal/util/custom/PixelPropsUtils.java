@@ -56,7 +56,23 @@ public class PixelPropsUtils {
     private static final String[] extraPackagesToChange = {
             "com.android.chrome",
             "com.android.vending",
-            "com.breel.wallpapers20"
+            "com.breel.wallpapers20",
+            "com.amazon.avod.thirdpartyclient",
+            "com.disney.disneyplus",
+            "com.netflix.mediaclient",
+            "in.startv.hotstar",
+            "com.google.android.apps.wallpaper",
+            "com.google.android.contacts",
+            "com.android.chrome",
+            "com.google.android.apps.googleassistant",
+            "com.google.android.deskclock",
+            "com.google.android.apps.youtube.music",
+            "com.google.android.apps.podcasts",
+            "com.google.android.apps.tachyon",
+            "com.google.android.apps.nbu.files",
+            "com.google.android.android.contacts",
+            "com.google.android.android.apps.messaging",
+            "com.google.android.gm"
     };
 
     private static final String[] packagesToKeep = {
