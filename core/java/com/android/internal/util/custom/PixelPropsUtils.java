@@ -15,6 +15,7 @@
  */
 package com.android.internal.util.custom;
 
+import android.app.Application;
 import android.os.Build;
 import android.os.SystemProperties;
 import android.util.Log;
@@ -193,12 +194,17 @@ public class PixelPropsUtils {
         propsToChangeMI11.put("MODEL", "M2102K1G");
     }
 
-    public static void setProps(String packageName) {
+    public static void setProps(Application app) {
+        final String packageName = app.getPackageName();
+        final String processName = app.getProcessName();
+
         if (packageName == null) {
             return;
         }
-        if (packageName.equals(PACKAGE_GMS)) {
-            sIsGms = true;
+
+        if (packageName.equals(PACKAGE_GMS) &&
+                    processName.equals(PACKAGE_GMS + ".unstable")) {
+                sIsGms = true;
         }
         boolean isPixelDevice = Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE));
         if (!isPixelDevice &&
