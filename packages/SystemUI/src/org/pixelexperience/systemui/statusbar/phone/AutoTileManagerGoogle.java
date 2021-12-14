@@ -55,7 +55,7 @@ public class AutoTileManagerGoogle extends AutoTileManager {
     @Override
     public void init() {
         super.init();
-        if (!mAutoTracker.isAdded("ott") && Build.IS_DEBUGGABLE) {
+        if (!mAutoTracker.isAdded("ott") && Build.IS_ENG) {
             mAutoTracker.setTileAdded("ott");
             mHost.addTile("ott");
         }
