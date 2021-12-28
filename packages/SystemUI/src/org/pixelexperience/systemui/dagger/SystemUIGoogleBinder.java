@@ -50,6 +50,7 @@ import org.pixelexperience.systemui.columbus.ColumbusTargetRequestServiceWrapper
 import org.pixelexperience.systemui.gamedashboard.GameMenuActivityWrapper;
 import org.pixelexperience.systemui.statusbar.dagger.StatusBarGoogleModule;
 import org.pixelexperience.systemui.theme.ThemeOverlayControllerGoogle;
+import org.pixelexperience.systemui.theme.CustomThemeOverlayController;
 
 import dagger.Binds;
 import dagger.Module;
@@ -168,7 +169,7 @@ public abstract class SystemUIGoogleBinder {
     @Binds
     @IntoMap
     @ClassKey(ThemeOverlayController.class)
-    public abstract SystemUI bindThemeOverlayController(ThemeOverlayControllerGoogle sysui);
+    public abstract SystemUI bindThemeOverlayController(CustomThemeOverlayController sysui);
 
     /**
      * Inject into ToastUI.
