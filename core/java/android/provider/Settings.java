@@ -5487,6 +5487,13 @@ public final class Settings {
         public static final String VOLUME_WAKE_SCREEN = "volume_wake_screen";
 
         /**
+         * Arcane Idle Manager
+         * @hide
+         */
+        @Readable
+        public static final String ARCANE_IDLE_MANAGER = "arcane_idle_manager";
+
+        /**
          * Whether or not volume button music controls should be enabled to seek media tracks
          * 0 = 0ff, 1 = on
          * @hide
