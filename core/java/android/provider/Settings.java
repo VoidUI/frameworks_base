@@ -5392,6 +5392,12 @@ public final class Settings {
          */
         public static final String CAMERA_WAKE_SCREEN = "camera_wake_screen";
 
+	/**
+         * Whether to show data usage in qs footer
+         * @hide
+         */
+        public static final String QS_FOOTER_DATA_USAGE = "qs_footer_data_usage";
+
         /**
          * Whether or not to send device back to sleep if Camera button is released ("Peek")
          * 0 = 0ff, 1 = on
