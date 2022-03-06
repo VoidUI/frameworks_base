@@ -157,6 +157,10 @@ class PrivacyItemController @Inject constructor(
                     || packageName in CAMERA_WHITELIST_PKG) {
                 return
             }
+            if (code in OPS_MIC_CAMERA && !micCameraAvailable
+                    || packageName in CAMERA_WHITELIST_PKG) {
+                return
+            }
             val userId = UserHandle.getUserId(uid)
             if (userId in currentUserIds ||
                     code == AppOpsManager.OP_PHONE_CALL_MICROPHONE ||
@@ -327,6 +331,10 @@ class PrivacyItemController @Inject constructor(
             else -> return null
         }
         if (type == PrivacyType.TYPE_LOCATION && !locationAvailable) {
+            return null
+        }
+        if (type == PrivacyType.TYPE_CAMERA && !micCameraAvailable
+                || appOpItem.packageName in CAMERA_WHITELIST_PKG) {
             return null
         }
         if (type == PrivacyType.TYPE_CAMERA && !micCameraAvailable
