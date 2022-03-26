@@ -91,6 +91,11 @@ public class PixelPropsUtils {
             "com.epicgames.portal"
     };
 
+    private static final Map<String, Object> propsToChangeMI11;
+    private static final String[] packagesToChangeMI11 = {
+            "com.mobile.legends"
+    };
+
     private static final String[] packagesToKeep = {
         PACKAGE_GMS,
         "com.google.android.GoogleCamera",
@@ -157,6 +162,12 @@ public class PixelPropsUtils {
         propsToChangeOP8P = new HashMap<>();
         propsToChangeOP8P.put("MODEL", "IN2020");
         propsToChangeOP8P.put("MANUFACTURER", "OnePlus");
+        propsToChangeMI11 = new HashMap<>();
+        propsToChangeMI11.put("BRAND", "Xiaomi");
+        propsToChangeMI11.put("MANUFACTURER", "Xiaomi");
+        propsToChangeMI11.put("DEVICE", "star");
+        propsToChangeMI11.put("PRODUCT", "star");
+        propsToChangeMI11.put("MODEL", "M2102K1G");
     }
 
     private static void setPropsForSamsung(String packageName) {
@@ -211,6 +222,10 @@ public class PixelPropsUtils {
                 propsToChange.putAll(propsToChangeOP8P);
             }
 
+            if (Arrays.asList(packagesToChangeMI11).contains(packageName)) {
+                propsToChange.putAll(propsToChangeMI11);
+            }
+
             if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
             for (Map.Entry<String, Object> prop : propsToChange.entrySet()) {
                 String key = prop.getKey();
@@ -249,6 +264,13 @@ public class PixelPropsUtils {
             } else if (Arrays.asList(packagesToChangeOP8P).contains(packageName)) {
                 if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
                 for (Map.Entry<String, Object> prop : propsToChangeOP8P.entrySet()) {
+                    String key = prop.getKey();
+                    Object value = prop.getValue();
+                    setPropValue(key, value);
+                }
+            } else if (Arrays.asList(packagesToChangeMI11).contains(packageName)) {
+                if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
+                for (Map.Entry<String, Object> prop : propsToChangeMI11.entrySet()) {
                     String key = prop.getKey();
                     Object value = prop.getValue();
                     setPropValue(key, value);
