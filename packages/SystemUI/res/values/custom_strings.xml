@@ -37,6 +37,9 @@
     <string name="qs_data_switch_changed_1">Switch data card to SIM 1.</string>
     <string name="qs_data_switch_changed_2">Switch data card to SIM 2.</string>
 
+    <!-- Autobrightness tile -->
+    <string name="quick_settings_autobrightness_label">Auto brightness</string>
+
     <!-- Sound QS Tile -->
     <string name="quick_settings_sound_label">Sound</string>
     <string name="quick_settings_sound_ring">Ring</string>
