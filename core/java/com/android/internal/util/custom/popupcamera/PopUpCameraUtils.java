@@ -21,7 +21,7 @@ import android.os.UserHandle;
 
 public class PopUpCameraUtils {
     public static String MANAGE_POPUP_CAMERA_SERVICE_PERMISSION =
-            "org.pixelexperience.device.MANAGE_POPUP_CAMERA_SERVICE";
+            "org.voidui.device.MANAGE_POPUP_CAMERA_SERVICE";
 
     public static String ACTION_BATTERY_LED_STATE_OVERRIDE =
             "android.intent.action.BATTERY_LED_STATE_OVERRIDE";
