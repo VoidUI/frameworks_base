@@ -34,7 +34,7 @@ public class ZygoteConfig {
      * not be used if the devices has a DeviceConfig profile pushed to it that contains a value for
      * this key or if the System Property dalvik.vm.usap_pool_enabled is set.
      */
-    public static final boolean USAP_POOL_ENABLED_DEFAULT = false;
+    public static final boolean USAP_POOL_ENABLED_DEFAULT = true;
 
 
 
