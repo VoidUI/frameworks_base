@@ -5296,4 +5296,7 @@
     <string-array name="config_serviceStateLocationAllowedPackages">
         <item>"com.android.phone"</item>
     </string-array>
+
+    <string name="config_lightFontFamily" translatable="false">sans-serif</string>
+
 </resources>
