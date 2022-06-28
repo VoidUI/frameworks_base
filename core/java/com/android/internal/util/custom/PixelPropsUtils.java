@@ -72,7 +72,9 @@ public class PixelPropsUtils {
             "com.google.android.apps.nbu.files",
             "com.google.android.android.contacts",
             "com.google.android.android.apps.messaging",
-            "com.google.android.gm"
+            "com.google.android.gm",
+	    "com.google.android.as",
+	    "com.google.android.inputmethod.latin"
 
     };
 
