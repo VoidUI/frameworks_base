@@ -7527,6 +7527,7 @@ public class ActivityManagerService extends IActivityManager.Stub
                 NETWORK_ACCESS_TIMEOUT_MS, NETWORK_ACCESS_TIMEOUT_DEFAULT_MS);
         mHiddenApiBlacklist.registerObserver();
         mPlatformCompat.registerContentObserver();
+        mOomAdjuster.registerContentObserver();
 
         mAppProfiler.retrieveSettings();
 
@@ -17309,6 +17310,17 @@ public class ActivityManagerService extends IActivityManager.Stub
         }
     }
 
+    @Override
+    public boolean isAppFreezerEnabled() {
+        final long token = Binder.clearCallingIdentity();
+
+        try {
+            return mOomAdjuster.mCachedAppOptimizer.useFreezer();
+        } finally {
+            Binder.restoreCallingIdentity(token);
+        }
+    }
+
     /**
      * Suppress or reenable the rate limit on foreground service notification deferral.
      * @param enable false to suppress rate-limit policy; true to reenable it.
@@ -17382,7 +17394,8 @@ public class ActivityManagerService extends IActivityManager.Stub
     }
     
     boolean shouldSkipBootCompletedBroadcastForPackage(ApplicationInfo info) {
-        return mActivityTaskManager.mAppStandbyInternal.isStrictStandbyPolicyEnabled() &&
+        return (mActivityTaskManager.mAppStandbyInternal.isStrictStandbyPolicyEnabled()
+                || mOomAdjuster.mForceBackgroundFreezerEnabled) &&
                 getAppOpsManager().checkOpNoThrow(
                         AppOpsManager.OP_RUN_ANY_IN_BACKGROUND,
                         info.uid, info.packageName) != AppOpsManager.MODE_ALLOWED;
