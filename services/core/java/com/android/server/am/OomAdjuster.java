@@ -2675,11 +2675,6 @@ public class OomAdjuster {
         }
     }
 
-    @GuardedBy("mProcLock")
-    void onWakefulnessChanged(int wakefulness) {
-        mCachedAppOptimizer.onWakefulnessChanged(wakefulness);
-    }
-
     /** Applies the computed oomadj, procstate and sched group values and freezes them in set* */
     @GuardedBy({"mService", "mProcLock"})
     private boolean applyOomAdjLSP(ProcessRecord app, boolean doingAll, long now,
