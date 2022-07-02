@@ -91,6 +91,7 @@ public final class PermissionManager {
             "permission grant or revoke changed gids";
 
     private static final String SYSTEM_PKG = "android";
+    private static final String SYSTEMUI_PKG = "com.android.systemui";
     private static final String BLUETOOTH_PKG = "com.android.bluetooth";
     private static final String PHONE_SERVICES_PKG = "com.android.phone";
 
@@ -945,6 +946,7 @@ public final class PermissionManager {
         updateIndicatorExemptedPackages(context);
         ArraySet<String> pkgNames = new ArraySet<>();
         pkgNames.add(SYSTEM_PKG);
+        pkgNames.add(SYSTEMUI_PKG);
         pkgNames.add(BLUETOOTH_PKG);
         pkgNames.add(PHONE_SERVICES_PKG);
         for (int i = 0; i < INDICATOR_EXEMPTED_PACKAGES.length; i++) {
