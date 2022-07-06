@@ -180,7 +180,7 @@ enum DebugLevel {
  * Turns on the Skia GPU option "reduceOpsTaskSplitting" which improves GPU
  * efficiency but may increase VRAM consumption. Default is "true".
  */
-#define PROPERTY_REDUCE_OPS_TASK_SPLITTING "renderthread.skia.reduceopstasksplitting"
+#define PROPERTY_REDUCE_OPS_TASK_SPLITTING "persist.sys.renderthread.skia.reduceopstasksplitting"
 
 /**
  * Enable WebView Overlays feature.
