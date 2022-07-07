@@ -540,6 +540,11 @@ static jbyteArray android_os_Parcel_marshall(JNIEnv* env, jclass clazz, jlong na
        return NULL;
     }
 
+    if (parcel->isForRpc()) {
+        jniThrowException(env, "java/lang/RuntimeException", "Tried to marshall an RPC Parcel.");
+        return NULL;
+    }
+
     if (parcel->objectsCount())
     {
         jniThrowException(env, "java/lang/RuntimeException",
