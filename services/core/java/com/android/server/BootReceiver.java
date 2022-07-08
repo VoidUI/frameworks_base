@@ -631,9 +631,8 @@ public class BootReceiver extends BroadcastReceiver {
             addFileToDropBox(db, timestamps, headers, "/dev/fscklogs/log", maxSize, tag);
         }
 
-        // Rename the file so we don't re-upload if the runtime restarts.
-        File pfile = new File("/dev/fscklogs/fsck");
-        file.renameTo(pfile);
+        // Remove the file so we don't re-upload if the runtime restarts.
+        file.delete();
     }
 
     private static void logFsMountTime() {
