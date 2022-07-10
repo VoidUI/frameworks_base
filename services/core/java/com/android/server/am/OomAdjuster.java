@@ -101,6 +101,7 @@ import android.util.ArraySet;
 import android.util.LongSparseArray;
 import android.util.Pair;
 import android.util.Slog;
+import android.os.SystemProperties;
 import android.util.proto.ProtoOutputStream;
 
 import com.android.internal.annotations.CompositeRWLock;
@@ -256,6 +257,14 @@ public class OomAdjuster {
     private final ProcessList mProcessList;
     private final ActivityManagerGlobalLock mProcLock;
 
+    // Min aging threshold in milliseconds to consider a B-service
+    int mMinBServiceAgingTime = 5000;
+    // Threshold for B-services when in memory pressure
+    int mBServiceAppThreshold = 5;
+    // Enable B-service aging propagation on memory pressure.
+    boolean mEnableBServicePropagation = false;
+    boolean mAllowLowerMemLevel = false;
+    
     private final int mNumSlots;
     private final ArrayList<ProcessRecord> mTmpProcessList = new ArrayList<ProcessRecord>();
     private final ArrayList<UidRecord> mTmpBecameIdle = new ArrayList<UidRecord>();
@@ -423,6 +432,10 @@ public class OomAdjuster {
         mCachedAppOptimizer = new CachedAppOptimizer(mService);
         mCacheOomRanker = new CacheOomRanker(service);
 
+        mMinBServiceAgingTime = Integer.valueOf(SystemProperties.get("persist.sys.fw.bservice_age", "5000"));
+        mBServiceAppThreshold = Integer.valueOf(SystemProperties.get("persist.sys.fw.bservice_limit", "5"));
+        mEnableBServicePropagation = Boolean.parseBoolean(SystemProperties.get("persist.sys.fw.bservice_enable", "false"));
+            
         mProcessGroupHandler = new Handler(adjusterThread.getLooper(), msg -> {
             final int pid = msg.arg1;
             final int group = msg.arg2;
@@ -1183,9 +1196,40 @@ public class OomAdjuster {
         int numCachedExtraGroup = 0;
         int numEmpty = 0;
         int numTrimming = 0;
+        ProcessRecord selectedAppRecord = null;
+        long serviceLastActivity = 0;
+        int numBServices = 0;
 
         for (int i = numLru - 1; i >= 0; i--) {
             ProcessRecord app = lruList.get(i);
+            if (mEnableBServicePropagation && app.mState.isServiceB()
+                    && (app.mState.getCurAdj() == ProcessList.SERVICE_B_ADJ)) {
+                numBServices++;
+                for (int s = app.mServices.numberOfRunningServices() - 1; s >= 0; s--) {
+                    ServiceRecord sr = app.mServices.getRunningServiceAt(s);
+                    if (DEBUG_OOM_ADJ) Slog.d(TAG,"app.processName = " + app.processName
+                            + " serviceb = " + app.mState.isServiceB() + " s = " + s + " sr.lastActivity = "
+                            + sr.lastActivity + " packageName = " + sr.packageName
+                            + " processName = " + sr.processName);
+                    if (SystemClock.uptimeMillis() - sr.lastActivity
+                            < mMinBServiceAgingTime) {
+                        if (DEBUG_OOM_ADJ) {
+                            Slog.d(TAG,"Not aged enough!!!");
+                        }
+                        continue;
+                    }
+                    if (serviceLastActivity == 0) {
+                        serviceLastActivity = sr.lastActivity;
+                        selectedAppRecord = app;
+                    } else if (sr.lastActivity < serviceLastActivity) {
+                        serviceLastActivity = sr.lastActivity;
+                        selectedAppRecord = app;
+                    }
+                }
+            }
+            if (DEBUG_OOM_ADJ && selectedAppRecord != null) Slog.d(TAG,
+                    "Identified app.processName = " + selectedAppRecord.processName
+                    + " app.pid = " + selectedAppRecord.getPid());
             final ProcessStateRecord state = app.mState;
             if (!app.isKilledByAm() && app.getThread() != null) {
                 // We don't need to apply the update for the process which didn't get computed
@@ -1266,6 +1310,15 @@ public class OomAdjuster {
                     numTrimming++;
                 }
             }
+        }
+
+        if ((numBServices > mBServiceAppThreshold) && (true == mAllowLowerMemLevel)
+                && (selectedAppRecord != null)) {
+            ProcessList.setOomAdj(selectedAppRecord.getPid(), selectedAppRecord.info.uid,
+                    ProcessList.CACHED_APP_MAX_ADJ);
+            selectedAppRecord.mState.setSetAdj(selectedAppRecord.mState.getCurAdj());
+            if (DEBUG_OOM_ADJ) Slog.d(TAG,"app.processName = " + selectedAppRecord.processName
+                        + " app.pid = " + selectedAppRecord.getPid() + " is moved to higher adj");
         }
 
         mProcessList.incrementProcStateSeqAndNotifyAppsLOSP(activeUids);
@@ -1646,6 +1699,7 @@ public class OomAdjuster {
             hasVisibleActivities = true;
             procState = PROCESS_STATE_CUR_TOP;
             state.bumpAllowStartFgsState(PROCESS_STATE_TOP);
+
             if (DEBUG_OOM_ADJ_REASON || logUid == appUid) {
                 reportOomAdjMessageLocked(TAG_OOM_ADJ, "Making top: " + app);
             }
