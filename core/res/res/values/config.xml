@@ -5140,7 +5140,7 @@
     <integer name="config_defaultAnalogClockSecondsHandFps">1</integer>
 
     <!-- the number of the max cached processes in the system. -->
-    <integer name="config_customizedMaxCachedProcesses">32</integer>
+    <integer name="config_customizedMaxCachedProcesses">48</integer>
 
     <!-- The display cutout configs for secondary built-in display. -->
     <string name="config_secondaryBuiltInDisplayCutout" translatable="false"></string>
