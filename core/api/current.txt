@@ -4521,6 +4521,21 @@ package android.app {
     method @NonNull public android.app.Service instantiateService(@NonNull ClassLoader, @NonNull String, @Nullable android.content.Intent) throws java.lang.ClassNotFoundException, java.lang.IllegalAccessException, java.lang.InstantiationException;
   }
 
+  public final class AppLockManager {
+    method @RequiresPermission("android.permission.MANAGE_APP_LOCK") public void addPackage(@NonNull String);
+    method @NonNull @RequiresPermission("android.permission.MANAGE_APP_LOCK") public java.util.List<java.lang.String> getPackages();
+    method @NonNull @RequiresPermission("android.permission.MANAGE_APP_LOCK") public java.util.List<java.lang.String> getPackagesWithSecureNotifications();
+    method public long getTimeout();
+    method public boolean isBiometricsAllowed();
+    method @RequiresPermission("android.permission.MANAGE_APP_LOCK") public void removePackage(@NonNull String);
+    method @RequiresPermission("android.permission.MANAGE_APP_LOCK") public void setBiometricsAllowed(boolean);
+    method @RequiresPermission("android.permission.MANAGE_APP_LOCK") public void setSecureNotification(@NonNull String, boolean);
+    method @RequiresPermission("android.permission.MANAGE_APP_LOCK") public void setTimeout(long);
+    method @RequiresPermission("android.permission.MANAGE_APP_LOCK") public void unlockPackage(@NonNull String);
+    field public static final boolean DEFAULT_BIOMETRICS_ALLOWED = true;
+    field public static final long DEFAULT_TIMEOUT = 10000L; // 0x2710L
+  }
+
   public class AppOpsManager {
     method @Deprecated public int checkOp(@NonNull String, int, @NonNull String);
     method @Deprecated public int checkOpNoThrow(@NonNull String, int, @NonNull String);
@@ -10609,6 +10624,7 @@ package android.content {
     field public static final String ACTIVITY_SERVICE = "activity";
     field public static final String ALARM_SERVICE = "alarm";
     field public static final String APPWIDGET_SERVICE = "appwidget";
+    field public static final String APP_LOCK_SERVICE = "app_lock";
     field public static final String APP_OPS_SERVICE = "appops";
     field public static final String APP_SEARCH_SERVICE = "app_search";
     field public static final String AUDIO_SERVICE = "audio";
@@ -35423,6 +35439,7 @@ package android.provider {
     field public static final String SELECTED_INPUT_METHOD_SUBTYPE = "selected_input_method_subtype";
     field public static final String SETTINGS_CLASSNAME = "settings_classname";
     field public static final String SKIP_FIRST_USE_HINTS = "skip_first_use_hints";
+    field public static final String TETHERING_ALLOW_VPN_UPSTREAMS = "tethering_allow_vpn_upstreams";
     field public static final String TOUCH_EXPLORATION_ENABLED = "touch_exploration_enabled";
     field @Deprecated public static final String TTS_DEFAULT_COUNTRY = "tts_default_country";
     field @Deprecated public static final String TTS_DEFAULT_LANG = "tts_default_lang";
@@ -38759,6 +38776,7 @@ package android.service.notification {
     method public int describeContents();
     method public String getGroupKey();
     method public int getId();
+    method public boolean getIsContentSecure();
     method public String getKey();
     method public android.app.Notification getNotification();
     method @NonNull public String getOpPkg();
