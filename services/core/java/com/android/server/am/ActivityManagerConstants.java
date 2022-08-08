@@ -114,7 +114,8 @@ final class ActivityManagerConstants extends ContentObserver {
     static final String KEY_FGS_START_DENIED_LOG_SAMPLE_RATE = "fgs_start_denied_log_sample_rate";
     static final String KEY_FGS_ALLOW_OPT_OUT = "fgs_allow_opt_out";
 
-    private static int DEFAULT_MAX_CACHED_PROCESSES = 48;
+    private static int DEFAULT_MAX_CACHED_PROCESSES = 60;
+    private static int DEFAULT_MAX_PHANTOM_PROCESSES = 60;
     private static final long DEFAULT_BACKGROUND_SETTLE_TIME = 60*1000;
     private static final long DEFAULT_FGSERVICE_MIN_SHOWN_TIME = 2*1000;
     private static final long DEFAULT_FGSERVICE_MIN_REPORT_TIME = 3*1000;
@@ -149,7 +150,6 @@ final class ActivityManagerConstants extends ContentObserver {
     private static final long DEFAULT_TOP_TO_FGS_GRACE_DURATION = 15 * 1000;
     private static final int DEFAULT_PENDINGINTENT_WARNING_THRESHOLD = 2000;
     private static final int DEFAULT_MIN_CRASH_INTERVAL = 2 * 60 * 1000;
-    private static final int DEFAULT_MAX_PHANTOM_PROCESSES = 32;
     private static final int DEFAULT_PROCESS_CRASH_COUNT_RESET_INTERVAL = 12 * 60 * 60 * 1000;
     private static final int DEFAULT_PROCESS_CRASH_COUNT_LIMIT = 12;
     private static final int DEFAULT_BOOT_TIME_TEMP_ALLOWLIST_DURATION = 20 * 1000;
@@ -538,6 +538,7 @@ final class ActivityManagerConstants extends ContentObserver {
     // processes and the number of those processes does not count against the cached
     // process limit. This will be initialized in the constructor.
     public int CUR_MAX_CACHED_PROCESSES;
+    public int CUR_MAX_PHANTOM_PROCESSES;
 
     static boolean USE_TRIM_SETTINGS = true;
     static int EMPTY_APP_PERCENT = 50;
@@ -806,8 +807,11 @@ final class ActivityManagerConstants extends ContentObserver {
     private void updatePerfConfigConstants() {
           // Maximum number of cached processes we will allow.
             DEFAULT_MAX_CACHED_PROCESSES = MAX_CACHED_PROCESSES = CUR_MAX_CACHED_PROCESSES = Integer.valueOf(
-                                                 SystemProperties.get("persist.sys.fw.bg_apps_limit", "48"));
+                                                 SystemProperties.get("persist.sys.fw.bg_apps_limit", "60"));
 
+	  // Maximum number of phantom processes before the system starts trimming phantom processes.
+	    DEFAULT_MAX_PHANTOM_PROCESSES = MAX_PHANTOM_PROCESSES = CUR_MAX_PHANTOM_PROCESSES = Integer.valueOf(
+                                                 SystemProperties.get("persist.sys.fw.bg_apps_limit", "60"));
             //Trim Settings
             USE_TRIM_SETTINGS = Boolean.parseBoolean(SystemProperties.get("persist.sys.fw.use_trim_settings", "true"));
             EMPTY_APP_PERCENT = Integer.valueOf(SystemProperties.get("persist.sys.fw.empty_app_percent", "50"));
