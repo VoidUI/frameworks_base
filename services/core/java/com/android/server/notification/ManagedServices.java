@@ -123,6 +123,8 @@ abstract public class ManagedServices {
     static final int APPROVAL_BY_COMPONENT = 1;
 
     protected final Context mContext;
+    // we need ArrayList<ManagedServiceInfo> to be protected because Multithreading is operating it
+    // and must have this lock to operate it
     protected final Object mMutex;
     private final UserProfiles mUserProfiles;
     protected final IPackageManager mPm;
@@ -1010,18 +1012,22 @@ abstract public class ManagedServices {
         if (service == null) {
             return false;
         }
-        ManagedServiceInfo info = getServiceFromTokenLocked(service);
-        if (info != null) {
-            return true;
+        synchronized (mMutex) {
+            ManagedServiceInfo info = getServiceFromTokenLocked(service);
+            if (info != null) {
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     protected ManagedServiceInfo checkServiceTokenLocked(IInterface service) {
         checkNotNull(service);
-        ManagedServiceInfo info = getServiceFromTokenLocked(service);
-        if (info != null) {
-            return info;
+        synchronized (mMutex) {
+            ManagedServiceInfo info = getServiceFromTokenLocked(service);
+            if (info != null) {
+                return info;
+            }
         }
         throw new SecurityException("Disallowed call from unknown " + getCaption() + ": "
                 + service + " " + service.getClass());
