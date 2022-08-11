@@ -155,7 +155,8 @@ public class PixelPropsUtils {
     // Packages to Spoof as Mi 11 Ultra
     private static final Map<String, Object> propsToChangeMI11;
     private static final String[] packagesToChangeMI11 = {
-            "com.mobile.legends"
+            "com.mobile.legends",
+            "com.levelinfinite.hotta.gp"
     };
 
     private static ArrayList<String> allProps = new ArrayList<>(Arrays.asList("BRAND", "MANUFACTURER", "DEVICE", "PRODUCT", "MODEL", "FINGERPRINT"));
