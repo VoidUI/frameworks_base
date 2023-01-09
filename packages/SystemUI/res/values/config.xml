@@ -672,3 +672,15 @@
     <string-array name="config_keyguard_statusbar_icon_blocklist" translatable="false">
     </string-array>
 </resources>
+
+<!-- Whether to enable dimming navigation buttons when wallpaper is not visible, should be
+         enabled for OLED devices to reduce/prevent burn in on the navigation bar (because of the
+         black background and static button placements) and disabled for all other devices to
+         prevent wasting cpu cycles on the dimming animation -->
+    <bool name="config_navigation_bar_enable_auto_dim_no_visible_wallpaper">true</bool>
+
+ <!-- How often in milliseconds to jitter the dream overlay in order to avoid burn-in. -->
+    <integer name="config_dreamOverlayBurnInProtectionUpdateIntervalMillis">1000</integer>
+
+    <!-- How long in milliseconds before full burn-in protection is achieved. -->
+    <integer name="config_dreamOverlayMillisUntilFullJitter">240000</integer>
