@@ -41,7 +41,6 @@ public class PixelPropsUtils {
             "com.google.android.apps.photos",
             "com.google.android.apps.turbo",
             "com.google.android.apps.turboadapter",
-            "com.google.android.dialer",
             "com.google.android.googlequicksearchbox",
             "com.google.android.tts",
             "com.google.audio.hearing.visualization.accessibility.scribe"
